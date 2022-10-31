@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Siswa;
+use App\Models\Book;
 
-class SiswaController extends Controller
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        $table = Siswa::all();
+        $table = Book::all();
 
         //return $data;
         return response()->json([
@@ -42,16 +42,18 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        // $table = Siswa::create([
+        // $table = Book::create([
         //     "name" => $request->name,
         //     "gender" => $request->gender,
         //     "age" => $request->age
         // ]);
 
-        $table = new Siswa();
-        $table->name = $request->name;
-        $table->gender = $request->gender;
-        $table->age = $request->age;
+        $table = new Book();
+        $table->title = $request->title;
+        $table->description = $request->description;
+        $table->author = $request->author;
+        $table->publisher = $request->publisher;
+        $table->date_of_issue = $request->date_of_issue;
         $table->save();
 
         //return $table
@@ -69,7 +71,7 @@ class SiswaController extends Controller
      */
     public function show($id)
     {
-        $table = Siswa::find($id);
+        $table = Book::find($id);
         if($table){
             return $table;
         }else{
@@ -97,11 +99,13 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $table = Siswa::find($id);
+        $table = Book::find($id);
         if($table){
-            $table->name = $request->name ? $request-> name : $table->name;
-            $table->gender = $request->gender ? $request->gender : $table->gender;
-            $table->age = $request->age ? $request->age : $table->age;
+            $table->title = $request->title ? $request-> title : $table->title;
+            $table->description = $request->description ? $request->description : $table->gender;
+            $table->author = $request->author ? $request->author : $table->author;
+            $table->publisher = $request->publisher ? $request->publisher : $table->publisher;
+            $table->date_of_issue = $request->date_of_issue ? $request->date_of_issue : $table->author;
             $table->save();
 
             return $table;
@@ -118,7 +122,7 @@ class SiswaController extends Controller
      */
     public function destroy($id)
     {
-        $table = Siswa::find($id);
+        $table = Book::find($id);
         if($table){
             $table->delete();
             return ["message" => "Delete succes"];

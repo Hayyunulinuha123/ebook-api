@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\HelloController;
+use App\Http\Controllers\testController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,28 +18,31 @@ use App\Http\Controllers\BookController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//   return $request->user();
+//});
+
+// Route::get('halo', function(){
+//     $data = ["me" => "Ganteng"];
+
+//     return $data;
+// });
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request){
 //     return $request->user();
 // });
 
-/*
-* Task
-* URL : http://localhost:8000/api/halo
-* Method: GET
-* Exec: function
-* Return: JSON => {"me": "Ganteng"}
-// */
-// Route::get('halo', function(){
-//     return ["me" => "ganteng"];
-// });
+//public route
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-/*
-* Task
-* URL : http://localhost:8000/api/halo
-* Method: GET
-* Exec: function
-* Return: JSON => {"me": "Ganteng"}
-*/
-Route::resource('hellocontroller', HelloController::class);
-Route::resource('siswa', SiswaController::class);
-Route::resource('book', BookController::class);
+// Route::resource('testController', testController::class);
+Route::resource('siswa', SiswaController::class);  
+Route::resource('books', BookController::class);  
+
+//protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('books', BookController::class)->except('create', 'edit');
+    Route::post('/logout', [AuthController::class, 'logout']) ;
+    Route::resource('authors', AuthorController::class)->except('create', 'edit');
+});
